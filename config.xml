@@ -1,0 +1,34 @@
+<configuration xmlns="http://logging.apache.org/log4php/">
+    
+    <renderer renderedClass="Accounts" renderingClass="AccountsLogger" />
+ 
+    <appender name="ConsoleAppender" class="LoggerAppenderConsole" />
+    
+    <appender name="FileAppender" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutPattern">
+            <param name="conversionPattern" value="%date{Y-m-d H:i:s,u} [%logger]->%-5level %message%newline" />
+        </layout>
+        <layout class="LoggerLayoutSimple" />
+        <param name="file" value="logs/file-%s.log" />
+        <param name="datePattern" value="Y-m-d" />
+    </appender>
+    
+    <appender name="toHTML" class="LoggerAppenderEcho">
+        <layout class="LoggerLayoutHtml">
+            <param name="title" value="DBManager Logger" />
+        </layout>
+    </appender>
+ 
+    <logger name="DBManagerLogger">
+        <appender_ref ref="FileAppender" />
+    </logger>
+    <logger name="Accounts">
+        <appender_ref ref="FileAppender" />
+    </logger>
+    
+    <root>
+        <level value="DEBUG" />
+        <appender_ref ref="ConsoleAppender" />
+        <appender_ref ref="toHTML" />
+    </root>
+</configuration>

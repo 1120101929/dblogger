@@ -1,0 +1,27 @@
+{
+    "name": "connection/dbmanager",
+    "version": "0.2.0",
+    "description": "A mysql connection classe (with logger)",
+    "keywords": ["logging", "mysql", "connection", "sql", "pdo", "logger"],
+    "type": "library",
+    "homepage": "http://www.phpclasses.org/package/8849",
+    "require": {
+        "php":">=5.4.0",
+        "apache/log4php": "2.3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Victor Mendonça",
+            "email": "androidmend@gmail.com"
+        }
+    ],
+    "support": {
+        "email": "root@vmendonca.com.br"
+    },
+    "autoload": {
+        "classmap": [
+            "src"
+        ]
+    }
+}

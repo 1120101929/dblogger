@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>DBManager Docs</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">DBManager Docs</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1619303061"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1619303061" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Accounts.html">Accounts</a></li>
+                                                    <li class="class"><a href="../classes/AccountsLogger.html">AccountsLogger</a></li>
+                                                    <li class="class"><a href="../classes/DatabaseException.html">DatabaseException</a></li>
+                                                    <li class="class"><a href="../classes/DBManagerLogger.html">DBManagerLogger</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>DBManagerLogger</h1>
+                    <p><em>This class uses the PDO library to access and perform queries in a MySQL server
+It&#039;s safe, fast and all changes are logged into a file for future audit.</em></p>
+                    <p>This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.</p>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/DBManagerLogger.html#method_getInstance" class="">getInstance()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method___destruct" class="">__destruct()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method___call" class="">__call()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_factoryFromCollection" class="">factoryFromCollection()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_createInsert" class="">createInsert()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_createUpdate" class="">createUpdate()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_createSelect" class="">createSelect()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_createDelete" class="">createDelete()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_select" class="">select()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_query" class="">query()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_getSize" class="">getSize()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_setSize" class="">setSize()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_getCallback" class="">getCallback()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_setCallback" class="">setCallback()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_getStatement" class="">getStatement()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_getCollection" class="">getCollection()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_getTimestamp" class="">getTimestamp()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DBManagerLogger.html#property_instance" class="">$instance</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_LIKE" class="">COL_LIKE</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_EQUAL" class="">COL_EQUAL</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_NOTEQUAL" class="">COL_NOTEQUAL</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_LESS" class="">COL_LESS</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_LESSOREQUAL" class="">COL_LESSOREQUAL</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_GREATER" class="">COL_GREATER</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_GREATEROREQUAL" class="">COL_GREATEROREQUAL</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_INLIST" class="">COL_INLIST</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_NOTINLIST" class="">COL_NOTINLIST</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_ISNULL" class="">COL_ISNULL</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#constant_COL_NOTNULL" class="">COL_NOTNULL</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/DBManagerLogger.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method___clone" class="">__clone()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method___wakeup" class="">__wakeup()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_factory" class="">factory()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_startTransaction" class="">startTransaction()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_createFrom" class="">createFrom()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_sanitizeParam" class="">sanitizeParam()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_sendCommit" class="">sendCommit()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_revert" class="">revert()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_setParam" class="">setParam()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_finalLog" class="">finalLog()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_doSprintf" class="">doSprintf()</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#method_handleCreate" class="">handleCreate()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DBManagerLogger.html#property_connection" class="">$connection</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_param" class="">$param</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_collection" class="">$collection</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_mode" class="">$mode</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_size" class="">$size</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_callback" class="">$callback</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_startTime" class="">$startTime</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_endTime" class="">$endTime</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_executionTime" class="">$executionTime</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_dateFormat" class="">$dateFormat</a><br />
+                                                                    <a href="../classes/DBManagerLogger.html#property_log" class="">$log</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/src.Database.class.html"><div class="path-wrapper">src\Database.class.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">DBManagerLogger</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\DBManagerLogger</div>
+                            </dd>
+
+                        
+                        
+                        
+                                                                            <dt>See also</dt>
+                                                                                    <dd><a href="http://vmendonca.com.br"><div class="namespace-wrapper">http://vmendonca.com.br</div></a></dd>
+                                                    
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>Victor Mendonca <a href="mailto:victor.mendonca@live.com">victor.mendonca@live.com</a></p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                copyright
+                            </th>
+                            <td>
+                                                                    <p>copyright (c) copyright 2014</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                since
+                            </th>
+                            <td>
+                                                                    <p>October 1, 2014 — Last update October 3, 2014</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                license
+                            </th>
+                            <td>
+                                                                    <p><a href="http://opensource.org/licenses/gpl-license.php">http://opensource.org/licenses/gpl-license.php</a> GNU Public Licence (GPL)</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                version
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_LIKE" name="constant_COL_LIKE" class="anchor"></a>
+            <article id="constant_COL_LIKE" class="constant">
+                <h3 class="">COL_LIKE</h3>
+                <pre class="signature">COL_LIKE</pre>
+                <p><em>Where clause LIKE</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_EQUAL" name="constant_COL_EQUAL" class="anchor"></a>
+            <article id="constant_COL_EQUAL" class="constant">
+                <h3 class="">COL_EQUAL</h3>
+                <pre class="signature">COL_EQUAL</pre>
+                <p><em>Where clause EQUAL (=)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_NOTEQUAL" name="constant_COL_NOTEQUAL" class="anchor"></a>
+            <article id="constant_COL_NOTEQUAL" class="constant">
+                <h3 class="">COL_NOTEQUAL</h3>
+                <pre class="signature">COL_NOTEQUAL</pre>
+                <p><em>Where clause different (&lt;&gt;)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_LESS" name="constant_COL_LESS" class="anchor"></a>
+            <article id="constant_COL_LESS" class="constant">
+                <h3 class="">COL_LESS</h3>
+                <pre class="signature">COL_LESS</pre>
+                <p><em>Where clause LESS (&lt;)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_LESSOREQUAL" name="constant_COL_LESSOREQUAL" class="anchor"></a>
+            <article id="constant_COL_LESSOREQUAL" class="constant">
+                <h3 class="">COL_LESSOREQUAL</h3>
+                <pre class="signature">COL_LESSOREQUAL</pre>
+                <p><em>Where clause LESS OR EQUAL (&lt;=)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_GREATER" name="constant_COL_GREATER" class="anchor"></a>
+            <article id="constant_COL_GREATER" class="constant">
+                <h3 class="">COL_GREATER</h3>
+                <pre class="signature">COL_GREATER</pre>
+                <p><em>Where clause GREATER (&gt;)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_GREATEROREQUAL" name="constant_COL_GREATEROREQUAL" class="anchor"></a>
+            <article id="constant_COL_GREATEROREQUAL" class="constant">
+                <h3 class="">COL_GREATEROREQUAL</h3>
+                <pre class="signature">COL_GREATEROREQUAL</pre>
+                <p><em>Where clause GREATER OR EQUAL (&gt;=)</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_INLIST" name="constant_COL_INLIST" class="anchor"></a>
+            <article id="constant_COL_INLIST" class="constant">
+                <h3 class="">COL_INLIST</h3>
+                <pre class="signature">COL_INLIST</pre>
+                <p><em>Where clause IN LIST (val1, val2,.</em></p>
+                <p>.. valn)</p>
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_NOTINLIST" name="constant_COL_NOTINLIST" class="anchor"></a>
+            <article id="constant_COL_NOTINLIST" class="constant">
+                <h3 class="">COL_NOTINLIST</h3>
+                <pre class="signature">COL_NOTINLIST</pre>
+                <p><em>Where clause NOT IN LIST (val1, val2,.</em></p>
+                <p>.. valn)</p>
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_ISNULL" name="constant_COL_ISNULL" class="anchor"></a>
+            <article id="constant_COL_ISNULL" class="constant">
+                <h3 class="">COL_ISNULL</h3>
+                <pre class="signature">COL_ISNULL</pre>
+                <p><em>Where clause IS NULL</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_COL_NOTNULL" name="constant_COL_NOTNULL" class="anchor"></a>
+            <article id="constant_COL_NOTNULL" class="constant">
+                <h3 class="">COL_NOTNULL</h3>
+                <pre class="signature">COL_NOTNULL</pre>
+                <p><em>Where clause IS NOT NULL</em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_instance" name="property_instance" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$instance</h3>
+                <pre class="signature">$instance : \DBManagerLogger</pre>
+                <p><em>Holds DBManagerLogger instance</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/DBManagerLogger.html">\DBManagerLogger</a>
+                &mdash; Holds database instance                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_connection" name="property_connection" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$connection</h3>
+                <pre class="signature">$connection : \PDO</pre>
+                <p><em>Holds PDO connection</em></p>
+                
+
+                                <h4>Type</h4>
+                \PDO
+                &mdash; Holds PDO connection                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_param" name="property_param" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$param</h3>
+                <pre class="signature">$param : array</pre>
+                <p><em>Holds statements parameters</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; Holds statements parameters                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_collection" name="property_collection" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$collection</h3>
+                <pre class="signature">$collection : array</pre>
+                <p><em>Holds a collection from database</em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; Holds a collection from database                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mode" name="property_mode" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$mode</h3>
+                <pre class="signature">$mode : String</pre>
+                <p><em>Holds statement mode (CRUD)</em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; Holds statemend mode (CRUD)                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_size" name="property_size" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$size</h3>
+                <pre class="signature">$size : integer</pre>
+                <p><em>Holds the DBManagerLogger::$collection size</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Holds the DBManagerLogger::$collection size                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_callback" name="property_callback" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$callback</h3>
+                <pre class="signature">$callback : String</pre>
+                <p><em>Holds the class required to create a new object (from collection)</em></p>
+                
+
+                                <h4>Type</h4>
+                String
+                &mdash; Holds the class required do create a object (from collection)                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_startTime" name="property_startTime" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$startTime</h3>
+                <pre class="signature">$startTime : integer</pre>
+                <p><em>Holds the time when app was started</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Hlds the time when app was started                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_endTime" name="property_endTime" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$endTime</h3>
+                <pre class="signature">$endTime : integer</pre>
+                <p><em>Holds the time when app was finished</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Hlds the time when app was finished                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_executionTime" name="property_executionTime" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$executionTime</h3>
+                <pre class="signature">$executionTime : integer</pre>
+                <p><em>Holds the time used to run the app</em></p>
+                
+
+                                <h4>Type</h4>
+                integer
+                &mdash; Holds the time used to run the app                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_dateFormat" name="property_dateFormat" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$dateFormat</h3>
+                <pre class="signature">$dateFormat : string</pre>
+                <p><em>Format string for log timestamps</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Valid PHP date() format string for log timestamps                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_log" name="property_log" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$log</h3>
+                <pre class="signature">$log : \Logger</pre>
+                <p><em>Holds the logger</em></p>
+                
+
+                                <h4>Type</h4>
+                \Logger
+                &mdash; Holds the logger                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getInstance" name="method_getInstance" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getInstance()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getInstance() : \DBManagerLogger</pre>
+                <p><em>Gets a unique instance of this</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/DBManagerLogger.html">\DBManagerLogger</a>
+                                            &mdash; <p>Return this instance.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            staticvar
+                        </th>
+                        <td>
+                                                                                            <p>DBManagerLogger $instance Class instance.</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___destruct" name="method___destruct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__destruct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__destruct() : void</pre>
+                <p><em>Unset this object and clear logger</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___call" name="method___call" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__call()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__call(string  <span class="argument">$method</span>, mixed  <span class="argument">$arguments</span>) : void</pre>
+                <p><em>Used when a invalid method is called</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$method </td>
+                                <td><p>Function name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$arguments </td>
+                                <td><p>Function parameters</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_factoryFromCollection" name="method_factoryFromCollection" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">factoryFromCollection()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">factoryFromCollection(integer  <span class="argument">$collectionIndex</span>) : Object</pre>
+                <p><em>Create a instance from element self::$collection by it index ($collectionIndex)</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$collectionIndex </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Object
+                                            &mdash; <p>Return a new object of type $object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createInsert" name="method_createInsert" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createInsert()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createInsert(string  <span class="argument">$tabela</span>, array  <span class="argument">$args</span>) : string</pre>
+                <p><em>Creates a INSERT sql</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tabela </td>
+                                <td><p>Table name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td><p>An array of column => value</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return the created sql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createUpdate" name="method_createUpdate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createUpdate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createUpdate(string  <span class="argument">$tabela</span>, array  <span class="argument">$updates</span>, array  <span class="argument">$cond</span>) : string</pre>
+                <p><em>Creates a UPDATE sql</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tabela </td>
+                                <td><p>Table name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$updates </td>
+                                <td><p>An array of columns to be updated column => value</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cond </td>
+                                <td><p>Where clause column => value</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return the created sql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createSelect" name="method_createSelect" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createSelect()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createSelect(string  <span class="argument">$tabela</span>, array  <span class="argument">$columns</span>, array  <span class="argument">$where = array()</span>, array  <span class="argument">$order = array()</span>) : string</pre>
+                <p><em>Creates a SELECT sql</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tabela </td>
+                                <td><p>Table name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$columns </td>
+                                <td><p>Columns to retrieve</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$where </td>
+                                <td><p>Where columns params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$order </td>
+                                <td><p>An array containing order structure (fields => 'columns names', order => 'asc|desc')</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return the created sql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createDelete" name="method_createDelete" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">createDelete()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createDelete(string  <span class="argument">$tabela</span>, array  <span class="argument">$where</span>) : string</pre>
+                <p><em>Creates a DELETE sql</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$tabela </td>
+                                <td><p>Table name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$where </td>
+                                <td><p>Where clause params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return the created sql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_select" name="method_select" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">select()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">select(string  <span class="argument">$sql</span>) : array</pre>
+                <p><em>Returns a collection of results selected from database</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sql </td>
+                                <td><p>The [select] string</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The collection base ond $sql</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_query" name="method_query" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">query()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">query(string  <span class="argument">$sql</span>) : boolean</pre>
+                <p><em>Execute a query on database</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sql </td>
+                                <td><p>SQL to be executed</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>True if query was executed successfuly, false otherwise</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getSize" name="method_getSize" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getSize()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getSize() : integer</pre>
+                <p><em>The DBManagerLogger::$collection size</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setSize" name="method_setSize" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setSize()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setSize(  <span class="argument">$size</span>) : \DBManagerLogger</pre>
+                <p><em>Set DBManagerLogger::$collection size</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$size </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/DBManagerLogger.html">\DBManagerLogger</a>
+                                            &mdash; <p>Return this object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCallback" name="method_getCallback" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getCallback()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCallback() : String</pre>
+                <p><em>Return the callback</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    String
+                                            &mdash; <p>The class callback</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setCallback" name="method_setCallback" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setCallback()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setCallback(string  <span class="argument">$callback</span>) : \DBManagerLogger</pre>
+                <p><em>Set the class callback</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$callback </td>
+                                <td><p>Class name to cast</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/DBManagerLogger.html">\DBManagerLogger</a>
+                                            &mdash; <p>Return this object</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStatement" name="method_getStatement" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStatement()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStatement() : mixed</pre>
+                <p><em>Get the statement</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                            &mdash; <p>The statement</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCollection" name="method_getCollection" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getCollection()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCollection() : array</pre>
+                <p><em>Get the collection</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The collection from [select] statement</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getTimestamp" name="method_getTimestamp" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getTimestamp()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getTimestamp() : string</pre>
+                <p><em>Gets the correctly formatted Date/Time for the log entry.</em></p>
+                <p>PHP DateTime is dump, and you have to resort to trickery to get microseconds
+to work correctly, so here it is.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The formatted timestamp</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct() : \PDO</pre>
+                <p><em>Private constructor in order of prevent new DBManagerLogger.</em></p>
+                <p>Must be called only via DBManagerLogger::getInstance()</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    \PDO
+                                            &mdash; <p>Return the PDO connection.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="../classes/DBManagerLogger.html#method_getInstance"><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___clone" name="method___clone" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">__clone()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__clone() : void</pre>
+                <p><em>Method unserialize private type to prevent cloning instance of this class.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___wakeup" name="method___wakeup" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">__wakeup()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__wakeup() : void</pre>
+                <p><em>Method unserialize private type to prevent deserialization of the instance of this class.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_factory" name="method_factory" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">factory()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">factory(string  <span class="argument">$object</span>, array  <span class="argument">$params = null</span>) : Object</pre>
+                <p><em>Create a new instance of $object using $params for constructor</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$object </td>
+                                <td><p>Name of the object will be created</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$params </td>
+                                <td><p>Array of data for the constructor of the $object</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Object
+                                            &mdash; <p>Return an object of $object type</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_startTransaction" name="method_startTransaction" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">startTransaction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">startTransaction() : void</pre>
+                <p><em>Starts a transaction</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_createFrom" name="method_createFrom" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">createFrom()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">createFrom(\Exception  <span class="argument">$e</span>, string  <span class="argument">$statement = &quot;&quot;</span>) : \DatabaseException</pre>
+                <p><em>Debug a excpetion found</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Exception</td>
+                                <td>$e </td>
+                                <td><p>The exception catched</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$statement </td>
+                                <td><p>The statement</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/DatabaseException.html">\DatabaseException</a>
+                                            &mdash; <p>The exception error</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_sanitizeParam" name="method_sanitizeParam" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">sanitizeParam()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">sanitizeParam(string|integer|array  <span class="argument">$data</span>) : array|integer|string</pre>
+                <p><em>Filter parameters of statement</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string|integer|array</td>
+                                <td>$data </td>
+                                <td><p>The parameters to filter</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array|integer|string
+                                            &mdash; <p>The filtered $data</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_sendCommit" name="method_sendCommit" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">sendCommit()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">sendCommit() : boolean</pre>
+                <p><em>Commit a statement</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Return commit result</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_revert" name="method_revert" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">revert()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">revert(\Exception  <span class="argument">$e</span>, string  <span class="argument">$sql = &quot;&quot;</span>) : boolean</pre>
+                <p><em>Roll back the data</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Exception</td>
+                                <td>$e </td>
+                                <td><p>The eexception</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sql </td>
+                                <td><p>The SQL statement</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>Result rollback result</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setParam" name="method_setParam" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">setParam()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setParam(array|object  <span class="argument">$param</span>) : void</pre>
+                <p><em>Set DBManagerLogger::$param and log it</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array|object</td>
+                                <td>$param </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_finalLog" name="method_finalLog" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">finalLog()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">finalLog(array|string|object  <span class="argument">$return</span>) : void</pre>
+                <p><em>Log the statement [mixed] result</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array|string|object</td>
+                                <td>$return </td>
+                                <td><p>The statement result</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_doSprintf" name="method_doSprintf" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">doSprintf()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">doSprintf(string  <span class="argument">$logical</span>, string  <span class="argument">$col</span>, boolean  <span class="argument">$create = true</span>) : string</pre>
+                <p><em>Formats a tring in order ot use in SQL statement OR params to bind the sql</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$logical </td>
+                                <td><p>DBManagerLogger::COL_{type}</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$col </td>
+                                <td><p>Column name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$create </td>
+                                <td><p>Will be used in SQL statement creating?</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return the formatted string</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_handleCreate" name="method_handleCreate" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">handleCreate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">handleCreate(string  <span class="argument">$table</span>, array  <span class="argument">$args</span>, string  <span class="argument">$sql</span>) </pre>
+                <p><em>Just a global logger to avoid code duplicate</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$table </td>
+                                <td><p>Table name</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args </td>
+                                <td><p>Array with parameters of $sql</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sql </td>
+                                <td><p>SQL statement</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Database.class.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/src\Database.class.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on October 3rd, 2014 at 18:35.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

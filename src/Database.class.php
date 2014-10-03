@@ -1,0 +1,787 @@
+<?php
+
+/**
+ * Class DBManagerLogger - Connect a MySQL server using PDO and Log it!
+ */
+
+/**
+ * This class uses the PDO library to access and perform queries in a MySQL server
+ * It's safe, fast and all changes are logged into a file for future audit.
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * 
+ * @package DBManagerLogger
+ * @author Victor Mendonca <victor.mendonca@live.com>
+ * @copyright copyright (c) copyright 2014
+ * @since   October 1, 2014 — Last update October 3, 2014
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public Licence (GPL)
+ * @version 0.2.0
+ * @link http://vmendonca.com.br
+ */
+class DBManagerLogger {
+
+    /**
+     * Holds DBManagerLogger instance
+     * 
+     * @access public
+     * @var DBManagerLogger $instance Holds database instance
+     */
+    public static $instance = null;
+
+    /**
+     * Holds PDO connection
+     * 
+     * @access private
+     * @var PDO $connection Holds PDO connection
+     */
+    private $connection = null;
+
+    /**
+     * Holds statements parameters
+     * 
+     * @access private
+     * @var array $params Holds statements parameters
+     */
+    private static $param = array();
+
+    /**
+     * Holds a collection from database
+     * 
+     * @access private
+     * @var array $collection Holds a collection from database
+     */
+    private static $collection = array();
+
+    /**
+     * Holds statement mode (CRUD)
+     * 
+     * @access private
+     * @var String $mode Holds statemend mode (CRUD)
+     */
+    private static $mode = 'select';
+
+    /**
+     * Holds the DBManagerLogger::$collection size
+     * 
+     * @access private
+     * @var int $size Holds the DBManagerLogger::$collection size
+     */
+    private static $size = 0;
+
+    /**
+     * Holds the class required to create a new object (from collection)
+     * 
+     * @access private
+     * @var String $callback Holds the class required do create a object (from collection)
+     */
+    private static $callback = null;
+
+    /**
+     * Holds the time when app was started
+     * 
+     * @access private
+     * @var int $startTime Hlds the time when app was started
+     */
+    private static $startTime = null;
+
+    /**
+     * Holds the time when app was finished
+     * 
+     * @access private
+     * @var int $endTime Hlds the time when app was finished
+     */
+    private static $endTime = null;
+
+    /**
+     * Holds the time used to run the app
+     * 
+     * @access private
+     * @var int $executionTime Holds the time used to run the app
+     */
+    private static $executionTime = null;
+
+    /**
+     * Format string for log timestamps
+     * 
+     * @access private
+     * @var string $dateFormat Valid PHP date() format string for log timestamps
+     */
+    private static $dateFormat = 'l F\, jS \of Y h:i:s A'; //.u
+
+    /**
+     * Holds the logger
+     * 
+     * @access private
+     * @var Logger $log Holds the logger
+     */
+    private $log;
+
+    /**
+     * Where clause LIKE
+     * 
+     * @var string Format value as as (LIKE '%<b>colValue</b>%')
+     */
+    const COL_LIKE = "LIKE '%%%s%%'";
+
+    /**
+     * Where clause EQUAL (=)
+     * 
+     * @var string Format value as as (= '<b>colValue</b>')
+     */
+    const COL_EQUAL = "= '%s'";
+
+    /**
+     * Where clause different (<>)
+     * 
+     * @var string Format value as as (<> '<b>colValue</b>')
+     */
+    const COL_NOTEQUAL = "<> '%s'";
+
+    /**
+     * Where clause LESS (<)
+     * 
+     * @var string Format value as as (< '<b>colValue</b>')
+     */
+    const COL_LESS = "< '%s'";
+
+    /**
+     * Where clause LESS OR EQUAL (<=)
+     * 
+     * @var string Format value as as (<= '<b>colValue</b>')
+     */
+    const COL_LESSOREQUAL = "<= '%s'";
+
+    /**
+     * Where clause GREATER (>)
+     * 
+     * @var string Format value as as (> '<b>colValue</b>')
+     */
+    const COL_GREATER = "> '%s'";
+
+    /**
+     * Where clause GREATER OR EQUAL (>=)
+     * 
+     * @var string Format value as as (>= '<b>colValue</b>')
+     */
+    const COL_GREATEROREQUAL = ">= '%s'";
+
+    /**
+     * Where clause IN LIST (val1, val2,... valn)
+     * 
+     * @var string Format value as as (IN ('<b>val1</b>','<b>val1</b>',...'<b>valn</b>'))
+     */
+    const COL_INLIST = "IN ('%s')";
+
+    /**
+     * Where clause NOT IN LIST (val1, val2,... valn)
+     * 
+     * @var string Format value as as (NOT IN ('<b>val1</b>','<b>val1</b>',...'<b>valn</b>'))
+     */
+    const COL_NOTINLIST = "NOT IN ('%s')";
+
+    /**
+     * Where clause IS NULL
+     * 
+     * @var string Format value as as (`<b>colName</b>` IS NULL)
+     */
+    const COL_ISNULL = "IS NULL";
+
+    /**
+     * Where clause IS NOT NULL
+     * 
+     * @var string Format value as as (`<b>colName</b>` IS NOT NULL)
+     */
+    const COL_NOTNULL = "IS NOT NULL";
+
+    /**
+     * Gets a unique instance of this
+     *
+     * @access public
+     * @staticvar DBManagerLogger $instance Class instance.
+     *
+     * @return DBManagerLogger Return this instance.
+     */
+    public static function getInstance() {
+
+        self::$startTime = microtime(true);
+        Logger::configure('config.xml');
+        if (null === self::$instance) {
+            self::$instance = new DBManagerLogger();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Private constructor in order of prevent new DBManagerLogger.
+     * Must be called only via DBManagerLogger::getInstance()
+     *
+     * @access private
+     * @see DBManagerLogger::getInstance()
+     * @return PDO Return the PDO connection.
+     */
+    private function __construct() {
+        $this->log = Logger::getLogger(__CLASS__);
+        $this->log->info("Initializing database connection.");
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
+        if (DB_PORT != 3306) {
+            $dsn = "mysql:host=" . DB_HOST . ":" . DB_PORT . ";dbname=" . DB_NAME;
+        }
+        $options = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        );
+        try {
+            if (version_compare(PHP_VERSION, '5.3.6', '<') && defined('PDO::MYSQL_ATTR_INIT_COMMAND')) {
+                $options[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES ' . DB_ENCODING;
+            } else {
+                $dsn .= ';charset=' . DB_ENCODING;
+            }
+            $this->connection = new PDO($dsn, DB_USER, DB_PASS, $options);
+            if (version_compare(PHP_VERSION, '5.3.6', '<') && !defined('PDO::MYSQL_ATTR_INIT_COMMAND')) {
+                $sql = 'SET NAMES ' . DB_ENCODING;
+                $this->connection->exec($sql);
+            }
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->connection->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+        } catch (Exception $e) {
+            self::createFrom($e, $dsn);
+        }
+        return $this->connection;
+    }
+
+    /**
+     * Unset this object and clear logger
+     *
+     * @access public
+     * @return void
+     */
+    public function __destruct() {
+        self::$endTime = microtime(true);
+        self::$executionTime = (self::$endTime - self::$startTime);
+        $this->log->info(sprintf("All queries performed in %g seconds", (float) self::$executionTime));
+        $this->log->info("Database closed");
+        $this->log->info("Changes made in: " . $this->getTimestamp());
+        $this->log->clear();
+    }
+
+    /**
+     * Used when a invalid method is called
+     *
+     * @access public
+     * @param string $method Function name
+     * @param mixed $arguments Function parameters
+     * @return void Call functions or log error
+     */
+    public function __call($method, $arguments) {
+        if (method_exists($this, $method)) {
+            call_user_func_array(array($this, $method), $arguments);
+        } else {
+            $this->log->warn("Called invalid method ({$method})");
+        }
+    }
+
+    /**
+     * Method unserialize private type to prevent cloning instance of this class.
+     *
+     * @access private
+     * @return void
+     */
+    private function __clone() {
+        $this->log->info("Database connection was cloned");
+    }
+
+    /**
+     * Method unserialize private type to prevent deserialization of the instance of this class.
+     *
+     * @access private
+     * @return void
+     */
+    private function __wakeup() {
+        
+    }
+
+    /**
+     * Create a new instance of $object using $params for constructor
+     *
+     * @access private
+     * @param string $object Name of the object will be created
+     * @param array $params Array of data for the constructor of the $object
+     * @return Object Return an object of $object type
+     */
+    private function factory($object, $params = null) {
+        $logger = Logger::getLogger($object);
+        $instance = new $object($params);
+        $logger->info($instance);
+        unset($logger);
+        return $instance;
+    }
+
+    /**
+     * Create a instance from element self::$collection by it index ($collectionIndex)
+     *
+     * @access public
+     * @param int $collectionIndex
+     * @return Object Return a new object of type $object
+     */
+    public function factoryFromCollection($collectionIndex) {
+        $type = get_class(self::getCollection()[$collectionIndex]);
+        return $this->factory($type, self::getCollection()[$collectionIndex]);
+    }
+
+    /**
+     * Creates a INSERT sql
+     *
+     * @access public
+     * @param string $tabela Table name
+     * @param array $args An array of column => value
+     * @return string Return the created sql
+     */
+    public function createInsert($tabela, $args) {
+        $sql = 'INSERT INTO ' . $tabela;
+        $sql .= '(`' . implode('`,`', array_keys($args)) . '`)';
+        $sql .= ' VALUES ';
+        $sql .= '(:' . implode(',:', array_keys($args)) . ');';
+
+        $this->handleCreate($tabela, $args, $sql);
+
+        return $sql;
+    }
+
+    /**
+     * Creates a UPDATE sql
+     *
+     * @access public
+     * @param string $tabela Table name
+     * @param array $updates An array of columns to be updated column => value
+     * @param array $cond Where clause column => value
+     * @return string Return the created sql
+     */
+    public function createUpdate($tabela, $updates, $cond) {
+        $arr = array();
+        $arrc = array();
+        $sql = "UPDATE {$tabela} SET";
+        foreach ($updates as $col => $value) {
+            if (trim($value) != '') {
+                $arr[] = " `{$col}` = :{$col}";
+            }
+        }
+        $sql .= implode(', ', $arr) . " WHERE";
+        $paramsWhere = array();
+        foreach ($cond as $col => $param) {
+            foreach ($param as $logical => $matches) {
+                $w = array();
+                foreach ($matches as $value => $operator) {
+                    $w[] = " `$col` {$this->doSprintf($logical, $col)} {$operator}";
+                    $paramsWhere[$col] = $this->doSprintf($logical, $value, false);
+                }
+                $sql .= implode('', $w);
+            }
+        }
+        $sql .= implode(' AND ', $arrc) . ';';
+        $params = array_merge($updates, $paramsWhere);
+
+        $this->handleCreate($tabela, $params, $sql);
+
+        return $sql;
+    }
+
+    /**
+     * Creates a SELECT sql
+     *
+     * @access public
+     * @param string $tabela Table name
+     * @param array $columns Columns to retrieve
+     * @param array $where Where columns params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))
+     * @param array $order An array containing order structure (fields => 'columns names', order => 'asc|desc')
+     * @return string Return the created sql
+     */
+    public function createSelect($tabela, $columns, $where = array(), $order = array()) {
+        $sql = "SELECT ";
+        $arr = array();
+        foreach ($columns as $col) {
+            $arr[] = "`$col`";
+        }
+        if (empty($arr)) {
+            $sql .= '*';
+        } else {
+            $sql .= implode(', ', $arr);
+        }
+        $sql .= " FROM {$tabela} ";
+        $params = array();
+        if (!empty($where)) {
+            $sql .= " WHERE ";
+            foreach ($where as $col => $param) {
+                foreach ($param as $logical => $matches) {
+                    $w = array();
+                    foreach ($matches as $value => $operator) {
+                        $w[] = " `$col` {$this->doSprintf($logical, $col)} {$operator}";
+                        $params[$col] = $this->doSprintf($logical, $value, false);
+                    }
+                    $sql .= implode('', $w);
+                }
+            }
+        }
+        if (!empty($order)) {
+            $string = implode(',', $order['fields']);
+            $sql .= "ORDER BY {$string} {$order['order']}";
+        }
+        $sql .= ';';
+
+        $this->handleCreate($tabela, $params, $sql);
+
+        return $sql;
+    }
+
+    /**
+     * Creates a DELETE sql
+     *
+     * @access public
+     * @param string $tabela Table name
+     * @param array $where Where clause params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))
+     * @return string Return the created sql
+     */
+    public function createDelete($tabela, $where) {
+        $sql = 'DELETE FROM ' . $tabela;
+
+        $params = array();
+        if (!empty($where)) {
+            $sql .= " WHERE ";
+            foreach ($where as $col => $param) {
+                foreach ($param as $logical => $matches) {
+                    $w = array();
+                    foreach ($matches as $value => $operator) {
+                        $w[] = " `$col` {$this->doSprintf($logical, $col)} {$operator}";
+                        $params[$col] = $this->doSprintf($logical, $value, false);
+                    }
+                    $sql .= implode('', $w);
+                }
+            }
+        }
+        $sql .= ';';
+
+        $this->handleCreate($tabela, $params, $sql);
+
+        return $sql;
+    }
+
+    /**
+     * Starts a transaction
+     *
+     * @access private
+     * @return void
+     */
+    private function startTransaction() {
+        $exception = null;
+        if (is_null($this->connection)) {
+            $this->log->fatal("Database connection is inactive");
+            $exception = new Exception("Database connection is inactive", 0, null);
+            self::createFrom($exception);
+            return false;
+        }
+        if ($this->connection->inTransaction()) {
+            $this->log->fatal("There is already an active transaction");
+            $exception = new Exception("There is already an active transaction", 0, null);
+            self::createFrom($exception);
+            return false;
+        }
+        $this->connection->beginTransaction();
+        $this->log->info("Transaction started");
+    }
+
+    /**
+     * Returns a collection of results selected from database
+     *
+     * @access public
+     * @param string $sql The [select] string
+     * @return array The collection base ond $sql
+     */
+    public function select($sql) {
+
+        try {
+            $this->startTransaction();
+            $st = $this->connection->prepare($sql);
+            (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
+            $this->setSize($st->rowCount());
+            $result = $st->fetchAll(PDO::FETCH_OBJ);
+            $this->sendCommit();
+
+            $return = array();
+            for ($i = 0; $i < $this->getSize(); $i++) {
+                $return[] = self::factory($this->getCallback(), $result[$i]);
+            }
+
+            $this->finalLog($return);
+            return $return;
+        } catch (Exception $e) {
+            $this->revert($e, $sql);
+        }
+    }
+
+    /**
+     * Execute a query on database
+     *
+     * @access public
+     * @param string $sql SQL to be executed
+     * @return boolean True if query was executed successfuly, false otherwise
+     */
+    public function query($sql) {
+
+        try {
+            $this->startTransaction();
+            $st = $this->connection->prepare($sql);
+            (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
+
+            $commit = $this->sendCommit();
+
+            return $this->finalLog($commit);
+        } catch (Exception $e) {
+            $this->revert($e, $sql);
+        }
+    }
+
+    /**
+     * Debug a excpetion found
+     *
+     * @access private
+     * @param Exception $e The exception catched
+     * @param string $statement The statement
+     * @return DatabaseException The exception error
+     */
+    private function createFrom(Exception $e, $statement = "") {
+
+        if (!is_string($statement)) {
+            $msg = sprintf('Statement must be string, %s given', gettype($statement));
+            throw new InvalidArgumentException($msg);
+        }
+
+        $message = $e->getMessage();
+        if (!is_null($statement) && !empty($statement)) {
+            #$message .= " in statement {$statement}";
+        }
+        $sqlstate = $e->getCode();
+
+        $exception = DatabaseException::getInstance($message, 0, $e);
+        $exception->setCode($sqlstate);
+        $exception->setStatement($statement);
+
+        $this->log->fatal($exception);
+    }
+
+    /**
+     * Filter parameters of statement
+     *
+     * @access private
+     * @param string|int|array $data The parameters to filter
+     * @param bool $forceQuote If true, use PDO::quote() in the values
+     * @return array|int|string The filtered $data
+     */
+    private function sanitizeParam($data) {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                if (is_array($value)) {
+                    $data[$key] = $this->sanitizeParam($value);
+                } else {
+                    $data[$key] = $value;
+                }
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Commit a statement
+     *
+     * @access private
+     * @return bool Return commit result
+     */
+    private function sendCommit() {
+        self::$param = array();
+        $commit = $this->connection->commit();
+        if ($commit) {
+            $this->log->info("Query commited " . ($commit ? 'successfuly' : 'with errors'));
+            $this->log->info("Transaction finished");
+        }
+        $this->log->info(sprintf("Statement [%s] closed", self::$mode));
+        return $commit;
+    }
+    
+    /**
+     * Roll back the data
+     * 
+     * @access private
+     * @param Exception $e The eexception
+     * @param string $sql The SQL statement
+     * @return bool Result rollback result
+     */
+    private function revert(Exception $e, $sql = "") {
+        self::$param = array();
+        $rollback = $this->connection->rollBack();
+        if ($rollback) {
+            $this->log->warn("Transaction finished but nothing changed. All data rolled back.");
+        }
+        self::createFrom($e, $sql);
+        return $rollback;
+    }
+
+    /**
+     * The DBManagerLogger::$collection size
+     *
+     * @access public
+     * @return int
+     */
+    public function getSize() {
+        return self::$size;
+    }
+
+    /**
+     * Set DBManagerLogger::$collection size
+     *
+     * @access public
+     * @param $size
+     * @return DBManagerLogger Return this object
+     */
+    public function setSize($size) {
+        self::$size = $size;
+        return $this;
+    }
+
+    /**
+     * Return the callback
+     *
+     * @access public
+     * @return String The class callback
+     */
+    public function getCallback() {
+        return self::$callback;
+    }
+
+    /**
+     * Set the class callback
+     *
+     * @access public
+     * @param string $callback Class name to cast
+     * @return DBManagerLogger Return this object
+     */
+    public function setCallback($callback) {
+        self::$callback = ucwords($callback);
+        return $this;
+    }
+
+    /**
+     * Get the statement
+     *
+     * @access public
+     * @return mixed The statement
+     */
+    public function getStatement() {
+        return $this->statement;
+    }
+
+    /**
+     * Get the collection
+     *
+     * @access public
+     * @return array The collection from [select] statement
+     */
+    public static function getCollection() {
+        return self::$collection;
+    }
+
+    /**
+     * Set DBManagerLogger::$param and log it
+     *
+     * @access private
+     * @param array|object $param
+     * @return void
+     */
+    private function setParam($param) {
+        self::$param = $param;
+        if (!empty($param)) {
+            $this->log->debug($param);
+        } else {
+            $this->log->info(sprintf("Statement [%s] executed with no parameters", self::$mode));
+        }
+    }
+
+    /**
+     * Gets the correctly formatted Date/Time for the log entry.
+     * 
+     * PHP DateTime is dump, and you have to resort to trickery to get microseconds
+     * to work correctly, so here it is.
+     *
+     * @access public
+     * @return string The formatted timestamp
+     */
+    public function getTimestamp() {
+        $originalTime = microtime(true);
+        $micro = sprintf("%06d", ($originalTime - floor($originalTime)) * 1000000);
+        $date = new DateTime(date('Y-m-d H:i:s.' . $micro, $originalTime));
+
+        return $date->format(self::$dateFormat);
+    }
+
+    /**
+     * Log the statement [mixed] result
+     *
+     * @access private
+     * @param array|string|object $return The statement result
+     * @return void
+     */
+    private function finalLog($return) {
+        self::$collection = $return;
+        $ht = '';
+        for ($i = 0; $i <= 40; $i++) {
+            $ht .= '#';
+        }
+        $this->log->info($ht);
+        self::$param = array();
+        return $return;
+    }
+
+    /**
+     * Formats a tring in order ot use in SQL statement OR params to bind the sql
+     * 
+     * @param string $logical DBManagerLogger::COL_{type}
+     * @param string $col Column name
+     * @param boolean $create Will be used in SQL statement creating?
+     * @return string Return the formatted string
+     */
+    private function doSprintf($logical, $col, $create = true) {
+        $fmtd = sprintf($logical, $col);
+        preg_match("~'(.*?)'~", $fmtd, $display);
+        $string = $display[1];
+        if ($create) {
+            $logic = preg_replace("/\'[^)]+\'/", "", $logical);
+            $string = "{$logic} :{$col}";
+        }
+        return $string;
+    }
+
+    /**
+     * Just a global logger to avoid code duplicate
+     * 
+     * @param string $table Table name
+     * @param array $args Array with parameters of $sql
+     * @param string $sql SQL statement
+     */
+    private function handleCreate($table, $args, $sql) {
+        self::$mode = substr($sql, 0, 6);
+        $this->log->info(sprintf("Statement [%s] created", self::$mode));
+        $this->setCallback($table);
+        $this->setParam($this->sanitizeParam($args));
+        $this->log->debug($sql);
+    }
+
+}
