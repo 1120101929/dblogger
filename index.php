@@ -32,7 +32,7 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * The host of the mysql server
  */
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'my-host');
 /**
  * The port of the mysql server
  */
@@ -40,15 +40,15 @@ define('DB_PORT', 3306);
 /**
  * The user of the mysql server
  */
-define('DB_USER', 'root');
+define('DB_USER', 'my-user');
 /**
  * The password of the mysql server
  */
-define('DB_PASS', 'admin');
+define('DB_PASS', 'my-pass');
 /**
  * The database to connect
  */
-define('DB_NAME', 'extalia');
+define('DB_NAME', 'my-db');
 /**
  * The database encoding (used to insert and update statements)
  */
