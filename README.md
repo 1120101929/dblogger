@@ -5,7 +5,7 @@ Database Manager
 <p>You can audit all queries was performed into database, with values, datetime and totally debugged by viewing the files created into ./log/ folder.</p>
 
 ---
-[![Coverage Status](https://img.shields.io/coveralls/mend3/dbmanager-logger.svg)](https://coveralls.io/r/mend3/dbmanager-logger) [![Coverage Status](https://coveralls.io/repos/mend3/dbmanager-logger/badge.png)](https://coveralls.io/r/mend3/dbmanager-logger) [![Latest Stable Version](https://poser.pugx.org/connection/dbmanager/v/stable.svg)](https://packagist.org/packages/connection/dbmanager) [![Total Downloads](https://poser.pugx.org/connection/dbmanager/downloads.svg)](https://packagist.org/packages/connection/dbmanager) [![Latest Unstable Version](https://poser.pugx.org/connection/dbmanager/v/unstable.svg)](https://packagist.org/packages/connection/dbmanager) [![License](https://poser.pugx.org/connection/dbmanager/license.svg)](https://packagist.org/packages/connection/dbmanager)
+[![Coverage Status](https://coveralls.io/repos/mend3/dbmanager-logger/badge.png)](https://coveralls.io/r/mend3/dbmanager-logger) [![Latest Stable Version](https://poser.pugx.org/connection/dbmanager/v/stable.svg)](https://packagist.org/packages/connection/dbmanager) [![Total Downloads](https://poser.pugx.org/connection/dbmanager/downloads.svg)](https://packagist.org/packages/connection/dbmanager) [![Latest Unstable Version](https://poser.pugx.org/connection/dbmanager/v/unstable.svg)](https://packagist.org/packages/connection/dbmanager) [![License](https://poser.pugx.org/connection/dbmanager/license.svg)](https://packagist.org/packages/connection/dbmanager)
 ---
 ## License
 
