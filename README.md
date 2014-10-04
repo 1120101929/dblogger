@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.</p>
 
 ## Installation
 
-Execute the [sql file] located in ```./src/```
+Execute the [sql file](src/accounts.sql "Example test table") located in ```./src/```
 
 Install [apache/log4php] using [composer].  
 
@@ -167,4 +167,3 @@ unset($pdo);
 
 [apache/log4php]:http://logging.apache.org/log4php/download.html
 [composer]:http://getcomposer.org/
-[sql file](src/accounts.sql "Example test table")
