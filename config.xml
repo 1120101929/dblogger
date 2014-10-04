@@ -19,7 +19,7 @@
         </layout>
     </appender>
  
-    <logger name="DBManagerLogger">
+    <logger name="DBManager">
         <appender_ref ref="FileAppender" />
     </logger>
     <logger name="Accounts">

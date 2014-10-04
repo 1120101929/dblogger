@@ -27,7 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.</p>
 
 ## Installation
 
-Install [apache/log4php] using [composer].
+Execute the [sql file] located in ```./src/```
+
+Install [apache/log4php] using [composer].  
 
 To install, add ```apache/log4php``` to your ```composer.json``` file.
 
@@ -58,8 +60,8 @@ define('DB_ENCODING', 'utf8'); // define the encoding of statements
 // Assuming you installed from Composer:  
 require "vendor/autoload.php";  
 
-// Get the instance of DBManagerLogger:  
-$pdo = DBManagerLogger::getInstance();  
+// Get the instance of DBManager:  
+$pdo = DBManager::getInstance();  
 
 ###### INSERT STATEMENT ######  
 // Array with columnKey => val (columns that will be used on INSERT clause)  
@@ -91,8 +93,8 @@ $paramUpd = array(
 $paramCond = array(  
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  
 	// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  
-    'key1' => array(DBManagerLogger::COL_EQUAL => array('val1' => 'and')),  
-    'key2' => array(DBManagerLogger::COL_EQUAL => array('val2' => null))  
+    'key1' => array(DBManager::COL_EQUAL => array('val1' => 'and')),  
+    'key2' => array(DBManager::COL_EQUAL => array('val2' => null))  
 );  
 // Creates the sql  
 $update = $pdo->createUpdate('tableName', $paramUpd, $paramCond);  
@@ -113,7 +115,7 @@ $resultUpdate = $pdo->query($update);
 $paramDel = array(  
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  
 	// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  
-	'colKey1' => array(DBManagerLogger::COL_EQUAL => array('colVal1' => null))  
+	'colKey1' => array(DBManager::COL_EQUAL => array('colVal1' => null))  
 );  
 $delete = $pdo->createDelete('tableName', $paramDel);  
 /*Array  
@@ -132,8 +134,8 @@ $paramSelect = array('colName1', 'colName2', 'colNameN');
 $paramWhere = array(  
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  
 	// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  
-    'colName1' => array(DBManagerLogger::COL_LIKE => array('colValue1' => 'and')),  
-    'colName2' => array(DBManagerLogger::COL_LIKE => array('colValue2' => null))  
+    'colName1' => array(DBManager::COL_LIKE => array('colValue1' => 'and')),  
+    'colName2' => array(DBManager::COL_LIKE => array('colValue2' => null))  
 );  
 // Array with columnKey -> value to order clause to select  
 // If null or empty, the result sql will be "SELECT col1, col2,... colN FROM tableName;"  
@@ -165,3 +167,4 @@ unset($pdo);
 
 [apache/log4php]:http://logging.apache.org/log4php/download.html
 [composer]:http://getcomposer.org/
+[sql file](src/accounts.sql "Example test table")

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class DBManagerLogger - Connect a MySQL server using PDO and Log it!
+ * Class DBManager - Connect a MySQL server using PDO and Log it!
  */
 
 /**
@@ -22,7 +22,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * 
- * @package DBManagerLogger
+ * @package DBManager
  * @author Victor Mendonca <victor.mendonca@live.com>
  * @copyright copyright (c) copyright 2014
  * @since   October 1, 2014 — Last update October 3, 2014
@@ -30,13 +30,13 @@
  * @version 0.2.0
  * @link http://vmendonca.com.br
  */
-class DBManagerLogger {
+class DBManager {
 
     /**
-     * Holds DBManagerLogger instance
+     * Holds DBManager instance
      * 
      * @access public
-     * @var DBManagerLogger $instance Holds database instance
+     * @var DBManager $instance Holds database instance
      */
     public static $instance = null;
 
@@ -73,10 +73,10 @@ class DBManagerLogger {
     private static $mode = 'select';
 
     /**
-     * Holds the DBManagerLogger::$collection size
+     * Holds the DBManager::$collection size
      * 
      * @access private
-     * @var int $size Holds the DBManagerLogger::$collection size
+     * @var int $size Holds the DBManager::$collection size
      */
     private static $size = 0;
 
@@ -209,27 +209,27 @@ class DBManagerLogger {
      * Gets a unique instance of this
      *
      * @access public
-     * @staticvar DBManagerLogger $instance Class instance.
+     * @staticvar DBManager $instance Class instance.
      *
-     * @return DBManagerLogger Return this instance.
+     * @return DBManager Return this instance.
      */
     public static function getInstance() {
 
         self::$startTime = microtime(true);
         Logger::configure('config.xml');
         if (null === self::$instance) {
-            self::$instance = new DBManagerLogger();
+            self::$instance = new DBManager();
         }
 
         return self::$instance;
     }
 
     /**
-     * Private constructor in order of prevent new DBManagerLogger.
-     * Must be called only via DBManagerLogger::getInstance()
+     * Private constructor in order of prevent new DBManager.
+     * Must be called only via DBManager::getInstance()
      *
      * @access private
-     * @see DBManagerLogger::getInstance()
+     * @see DBManager::getInstance()
      * @return PDO Return the PDO connection.
      */
     private function __construct() {
@@ -403,7 +403,7 @@ class DBManagerLogger {
      * @access public
      * @param string $tabela Table name
      * @param array $columns Columns to retrieve
-     * @param array $where Where columns params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))
+     * @param array $where Where columns params array('column_name' => array(DBManager::COL_OPERATOR => array('column_value' => 'and|or'))
      * @param array $order An array containing order structure (fields => 'columns names', order => 'asc|desc')
      * @return string Return the created sql
      */
@@ -449,7 +449,7 @@ class DBManagerLogger {
      *
      * @access public
      * @param string $tabela Table name
-     * @param array $where Where clause params array('column_name' => array(DBManagerLogger::COL_OPERATOR => array('column_value' => 'and|or'))
+     * @param array $where Where clause params array('column_name' => array(DBManager::COL_OPERATOR => array('column_value' => 'and|or'))
      * @return string Return the created sql
      */
     public function createDelete($tabela, $where) {
@@ -572,7 +572,7 @@ class DBManagerLogger {
         }
         $sqlstate = $e->getCode();
 
-        $exception = DatabaseException::getInstance($message, 0, $e);
+        $exception = DBManagerException::getInstance($message, 0, $e);
         $exception->setCode($sqlstate);
         $exception->setStatement($statement);
 
@@ -636,7 +636,7 @@ class DBManagerLogger {
     }
 
     /**
-     * The DBManagerLogger::$collection size
+     * The DBManager::$collection size
      *
      * @access public
      * @return int
@@ -646,11 +646,11 @@ class DBManagerLogger {
     }
 
     /**
-     * Set DBManagerLogger::$collection size
+     * Set DBManager::$collection size
      *
      * @access public
      * @param $size
-     * @return DBManagerLogger Return this object
+     * @return DBManager Return this object
      */
     public function setSize($size) {
         self::$size = $size;
@@ -672,7 +672,7 @@ class DBManagerLogger {
      *
      * @access public
      * @param string $callback Class name to cast
-     * @return DBManagerLogger Return this object
+     * @return DBManager Return this object
      */
     public function setCallback($callback) {
         self::$callback = ucwords($callback);
@@ -700,7 +700,7 @@ class DBManagerLogger {
     }
 
     /**
-     * Set DBManagerLogger::$param and log it
+     * Set DBManager::$param and log it
      *
      * @access private
      * @param array|object $param
@@ -753,7 +753,7 @@ class DBManagerLogger {
     /**
      * Formats a tring in order ot use in SQL statement OR params to bind the sql
      * 
-     * @param string $logical DBManagerLogger::COL_{type}
+     * @param string $logical DBManager::COL_{type}
      * @param string $col Column name
      * @param boolean $create Will be used in SQL statement creating?
      * @return string Return the formatted string

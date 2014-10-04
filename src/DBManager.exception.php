@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class DatabaseException - Handlers custom exception
+ * Class DBManagerException - Handlers custom exception
  */
 
 /**
@@ -30,38 +30,38 @@
  * @version 0.2.0
  * @link http://vmendonca.com.br
  */
-class DatabaseException extends Exception {
+class DBManagerException extends Exception {
 
     /**
      * The default exception message
      * 
      * @var string $message
      */
-    protected $message = 'Unknown DatabaseException';     // Exception message
+    protected $message = 'Unknown DBManagerException';     // Exception message
 
     /**
-     * Get the DatabaseException instance
+     * Get the DBManagerException instance
      * 
      * @access public
      * @param string $message Exception message
      * @param int $code Exception error code
      * @param Exception $previous Previous exception
-     * @return DatabaseException The instance of DatabaseException
+     * @return DBManagerException The instance of DBManagerException
      */
 
     public static function getInstance($message = null, $code = null, $previous = null) {
-        return new DatabaseException($message, $code, $previous);
+        return new DBManagerException($message, $code, $previous);
     }
 
     /**
-     * Create a new object of DatabaseException
+     * Create a new object of DBManagerException
      * 
      * @access public
      * @param string $message The message
      * @param int $code The code
      * @param Exception $previous The previous exception
-     * @throws DatabaseException
-     * @return DatabaseException The instance of DatabaseException
+     * @throws DBManagerException
+     * @return DBManagerException The instance of DBManagerException
      */
     public function __construct($message = null, $code = null, $previous = null) {
         if (!$message) {

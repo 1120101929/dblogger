@@ -32,7 +32,7 @@ date_default_timezone_set('America/Sao_Paulo');
 /**
  * The host of the mysql server
  */
-define('DB_HOST', 'my-host');
+define('DB_HOST', 'localhost');
 /**
  * The port of the mysql server
  */
@@ -40,15 +40,15 @@ define('DB_PORT', 3306);
 /**
  * The user of the mysql server
  */
-define('DB_USER', 'my-user');
+define('DB_USER', 'root');
 /**
  * The password of the mysql server
  */
-define('DB_PASS', 'my-pass');
+define('DB_PASS', '');
 /**
  * The database to connect
  */
-define('DB_NAME', 'my-db');
+define('DB_NAME', 'test');
 /**
  * The database encoding (used to insert and update statements)
  */
@@ -56,7 +56,7 @@ define('DB_ENCODING', 'utf8');
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$pdo = DBManagerLogger::getInstance();
+$pdo = DBManager::getInstance();
 
 ################### INSERT STATEMENT ###################
 $paramIns = array(
@@ -75,22 +75,22 @@ $paramUpd = array(
     'vip_level' => 5,
 );
 $paramCond = array(
-    'login' => array(DBManagerLogger::COL_EQUAL => array('adm2' => 'and')),
-    'email' => array(DBManagerLogger::COL_EQUAL => array('root@vmendonca.com.br' => null))
+    'login' => array(DBManager::COL_EQUAL => array('adm2' => 'and')),
+    'email' => array(DBManager::COL_EQUAL => array('root@vmendonca.com.br' => null))
 );
 $update = $pdo->createUpdate('accounts', $paramUpd, $paramCond);
 $resultUpdate = $pdo->query($update);
 
 ################### DELETE STATEMENT ###################
-$paramDel = array('login' => array(DBManagerLogger::COL_EQUAL => array('adm2' => null)));
+$paramDel = array('login' => array(DBManager::COL_EQUAL => array('adm2' => null)));
 $delete = $pdo->createDelete('accounts', $paramDel);
 $resultDelete = $pdo->query($delete);
 
 ################### SELECT STATEMENT ###################
 $paramSelect = array('login', 'email', 'access_level', 'vip_level');
 $paramWhere = array(
-    'login' => array(DBManagerLogger::COL_LIKE => array('adm' => 'and')),
-    'email' => array(DBManagerLogger::COL_LIKE => array('mend' => null))
+    'login' => array(DBManager::COL_LIKE => array('adm' => 'and')),
+    'email' => array(DBManager::COL_LIKE => array('mend' => null))
 );
 $paramOrder = array(
     'fields' => array('access_level', 'vip_level'),
