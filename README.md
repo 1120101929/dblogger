@@ -60,7 +60,6 @@ require "vendor/autoload.php";
 $pdo = DBManagerLogger::getInstance();  
 
 ###### INSERT STATEMENT ######  
-// Let's create a insert statement  
 // Array with columnKey => val (columns that will be used on INSERT clause)  
 $paramIns = array(  
     'colName1' => 'colValue1',  
@@ -74,12 +73,12 @@ $insert = $pdo->createInsert('tableName', $paramIns);
     [colName1] => colValue1  
     [colName2] => colValue2  
     [colNameN] => colValueN  
-)*/  
-// INSERT INTO tableName(`colName1`,`colName2`,`colNameN`) VALUES (:colName1,:colName2,:colNameN);  
+)
+INSERT INTO tableName(`colName1`,`colName2`,`colNameN`) VALUES (:colName1,:colName2,:colNameN);  
+*/  
 $resultInsert = $pdo->query($insert);  
   
 ###### UPDATE STATEMENT ######  
-// Let's create a update statement  
 // Array with columnKey => val (columns that will be updated)  
 $paramUpd = array(  
     'colName1' => 'colValue1',  
@@ -101,13 +100,13 @@ $update = $pdo->createUpdate('tableName', $paramUpd, $paramCond);
     [colName2] => colValue2  
     [key1] => val1  
     [key2] => val2  
-)*/  
-// UPDATE tableName SET `colName1` = :colName1,  `colName2` = :colName2 WHERE `key1` =  :key1 and `key2` =  :key2 ;  
+)  
+UPDATE tableName SET `colName1` = :colName1,  `colName2` = :colName2 WHERE `key1` =  :key1 and `key2` =  :key2 ;  
+*/  
 $resultUpdate = $pdo->query($update);  
   
 ###### DELETE STATEMENT ######  
-// Let's create a delete statement  
-// Array with columnKey -> value to where clause to delete  
+// Array with columnKey => value to where clause to delete  
 // If null or empty, the result sql will be "DELETE FROM tableName;"  
 $paramDel = array(  
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  
@@ -118,15 +117,15 @@ $delete = $pdo->createDelete('tableName', $paramDel);
 /*Array  
 (  
     [colKey1] => colVal1  
-)*/  
-// DELETE FROM table WHERE  `key1` =  :key1;  
+)  
+DELETE FROM table WHERE  `key1` =  :key1;  
+*/  
 $resultDelete = $pdo->query($delete);  
   
 ###### SELECT STATEMENT ######  
-// Let's create a select statement  
 // Array with columns to retrieve  
 $paramSelect = array('colName1', 'colName2', 'colNameN');  
-// Array with columnKey -> value to where clause to select  
+// Array with columnKey => value to where clause to select  
 // If null or empty, the result sql will be "SELECT col1, col2,... colN FROM tableName ORDER BY col1,col2,...colN;"  
 $paramWhere = array(  
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  
@@ -148,8 +147,9 @@ $select = $pdo->createSelect('tableName', $paramSelect, $paramWhere, $paramOrder
 (  
     [colName1] => %colValue1%  
     [colName2] => %colValue2%  
-)*/  
-// SELECT `colName1`, `colName2`, `colNameN` FROM table  WHERE  `colName1` LIKE :colName1 and `colName2` LIKE :colName2 ORDER BY colName1,colName2 ASC;  
+)  
+SELECT `colName1`, `colName2`, `colNameN` FROM table  WHERE  `colName1` LIKE :colName1 and `colName2` LIKE :colName2 ORDER BY colName1,colName2 ASC;  
+*/  
 $resultSelect = $pdo->select($select);  
   
 unset($pdo);  
