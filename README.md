@@ -156,5 +156,10 @@ unset($pdo);
 ?>  
 ```  
 
+## Screenshots  
+
+![Logger HTML view](views/screenshot.png "The script result on the web")  
+![Logger FILE view](views/screenshot2.png "The script result on the file")
+
 [apache/log4php]:http://logging.apache.org/log4php/download.html
 [composer]:http://getcomposer.org/
