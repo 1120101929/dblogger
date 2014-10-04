@@ -1,0 +1,226 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>DBManager-logger</title>
+  <meta name="description" content="Database manager with logger for audit">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">DBManager-logger</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Database manager with logger for audit</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/mend3/dbmanager-logger/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/mend3/dbmanager-logger/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/mend3/dbmanager-logger" class="code">View DBManager-logger on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
+<a name="database-manager" class="anchor" href="#database-manager"><span class="octicon octicon-link"></span></a>Database Manager</h1>
+
+<p>This class provides a safe connection with database (yeah, it does use transaction) and log all actions performed daily into a single file/day.</p>
+
+<p>You can audit all queries was performed into database, with values, datetime and totally debugged by viewing the files created into ./log/ folder.</p>
+
+<hr><h2>
+<a name="----" class="anchor" href="#----"><span class="octicon octicon-link"></span></a>
+<a href="https://coveralls.io/r/mend3/dbmanager-logger"><img src="https://coveralls.io/repos/mend3/dbmanager-logger/badge.png" alt="Coverage Status"></a> <a href="https://packagist.org/packages/connection/dbmanager"><img src="https://poser.pugx.org/connection/dbmanager/v/stable.svg" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/connection/dbmanager"><img src="https://poser.pugx.org/connection/dbmanager/downloads.svg" alt="Total Downloads"></a> <a href="https://packagist.org/packages/connection/dbmanager"><img src="https://poser.pugx.org/connection/dbmanager/v/unstable.svg" alt="Latest Unstable Version"></a> <a href="https://packagist.org/packages/connection/dbmanager"><img src="https://poser.pugx.org/connection/dbmanager/license.svg" alt="License"></a>
+</h2>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.</p>
+
+<hr><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Execute the <a href="src/accounts.sql" title="Example test table">sql file</a> located in <code>./src/</code></p>
+
+<p>Install <a href="http://logging.apache.org/log4php/download.html">apache/log4php</a> using <a href="http://getcomposer.org/">composer</a>.  </p>
+
+<p>To install, add <code>apache/log4php</code> to your <code>composer.json</code> file.</p>
+
+<pre><code>{  
+   "require" : {  
+    "apache/log4php": "2.3.0"  
+  },  
+}
+</code></pre>
+
+<p>From there, use the <code>composer install</code> or <code>composer update</code> commands to install.</p>
+
+<hr><h2>
+<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h2>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>  
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_HOST'</span><span class="p">,</span> <span class="s1">'my-host'</span><span class="p">);</span> <span class="c1">// define the host of mysql server  </span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_PORT'</span><span class="p">,</span> <span class="mi">3306</span><span class="p">);</span> <span class="c1">// define the port of mysql server  </span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_USER'</span><span class="p">,</span> <span class="s1">'my-user'</span><span class="p">);</span> <span class="c1">// define the user of mysql server  </span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_PASS'</span><span class="p">,</span> <span class="s1">'my-pass'</span><span class="p">);</span> <span class="c1">// define the password of mysql server  </span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_NAME'</span><span class="p">,</span> <span class="s1">'my-db'</span><span class="p">);</span> <span class="c1">// define the database name  </span>
+<span class="nb">define</span><span class="p">(</span><span class="s1">'DB_ENCODING'</span><span class="p">,</span> <span class="s1">'utf8'</span><span class="p">);</span> <span class="c1">// define the encoding of statements  </span>
+
+<span class="c1">// Assuming you installed from Composer:  </span>
+<span class="k">require</span> <span class="s2">"vendor/autoload.php"</span><span class="p">;</span>  
+
+<span class="c1">// Get the instance of DBManager:  </span>
+<span class="nv">$pdo</span> <span class="o">=</span> <span class="nx">DBManager</span><span class="o">::</span><span class="na">getInstance</span><span class="p">();</span>  
+
+<span class="c1">###### INSERT STATEMENT ######  </span>
+<span class="c1">// Array with columnKey =&gt; val (columns that will be used on INSERT clause)  </span>
+<span class="nv">$paramIns</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="s1">'colName1'</span> <span class="o">=&gt;</span> <span class="s1">'colValue1'</span><span class="p">,</span>  
+    <span class="s1">'colName2'</span> <span class="o">=&gt;</span> <span class="s1">'colValue2'</span><span class="p">,</span>  
+    <span class="s1">'colNameN'</span> <span class="o">=&gt;</span> <span class="s1">'colValueN'</span><span class="p">,</span>  
+<span class="p">);</span>  
+<span class="c1">// Creates the sql  </span>
+<span class="nv">$insert</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">createInsert</span><span class="p">(</span><span class="s1">'tableName'</span><span class="p">,</span> <span class="nv">$paramIns</span><span class="p">);</span>  
+<span class="cm">/*Array  </span>
+<span class="cm">(  </span>
+<span class="cm">    [colName1] =&gt; colValue1  </span>
+<span class="cm">    [colName2] =&gt; colValue2  </span>
+<span class="cm">    [colNameN] =&gt; colValueN  </span>
+<span class="cm">)</span>
+<span class="cm">INSERT INTO tableName(`colName1`,`colName2`,`colNameN`) VALUES (:colName1,:colName2,:colNameN);  </span>
+<span class="cm">*/</span>  
+<span class="nv">$resultInsert</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$insert</span><span class="p">);</span>  
+
+<span class="c1">###### UPDATE STATEMENT ######  </span>
+<span class="c1">// Array with columnKey =&gt; val (columns that will be updated)  </span>
+<span class="nv">$paramUpd</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="s1">'colName1'</span> <span class="o">=&gt;</span> <span class="s1">'colValue1'</span><span class="p">,</span>  
+    <span class="s1">'colName2'</span> <span class="o">=&gt;</span> <span class="s1">'colValue2'</span>  
+<span class="p">);</span>  
+<span class="c1">// Array with columnKey =&gt; val (columns that will be used on WHERE clause)  </span>
+<span class="c1">// If null or empty, the result sql will be "UPDATE tableName SET col1 = :val1, col2 = :va2, ... colN = :valN ;"  </span>
+<span class="nv">$paramCond</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="c1">// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  </span>
+    <span class="c1">// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  </span>
+    <span class="s1">'key1'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">DBManager</span><span class="o">::</span><span class="na">COL_EQUAL</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'val1'</span> <span class="o">=&gt;</span> <span class="s1">'and'</span><span class="p">)),</span>  
+    <span class="s1">'key2'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">DBManager</span><span class="o">::</span><span class="na">COL_EQUAL</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'val2'</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">))</span>  
+<span class="p">);</span>  
+<span class="c1">// Creates the sql  </span>
+<span class="nv">$update</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">createUpdate</span><span class="p">(</span><span class="s1">'tableName'</span><span class="p">,</span> <span class="nv">$paramUpd</span><span class="p">,</span> <span class="nv">$paramCond</span><span class="p">);</span>  
+<span class="cm">/*Array  </span>
+<span class="cm">(  </span>
+<span class="cm">    [colName1] =&gt; colValue1  </span>
+<span class="cm">    [colName2] =&gt; colValue2  </span>
+<span class="cm">    [key1] =&gt; val1  </span>
+<span class="cm">    [key2] =&gt; val2  </span>
+<span class="cm">)  </span>
+<span class="cm">UPDATE tableName SET `colName1` = :colName1,  `colName2` = :colName2 WHERE `key1` =  :key1 and `key2` =  :key2 ;  </span>
+<span class="cm">*/</span>  
+<span class="nv">$resultUpdate</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$update</span><span class="p">);</span>  
+
+<span class="c1">###### DELETE STATEMENT ######  </span>
+<span class="c1">// Array with columnKey =&gt; value to where clause to delete  </span>
+<span class="c1">// If null or empty, the result sql will be "DELETE FROM tableName;"  </span>
+<span class="nv">$paramDel</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="c1">// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  </span>
+    <span class="c1">// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  </span>
+    <span class="s1">'colKey1'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">DBManager</span><span class="o">::</span><span class="na">COL_EQUAL</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'colVal1'</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">))</span>  
+<span class="p">);</span>  
+<span class="nv">$delete</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">createDelete</span><span class="p">(</span><span class="s1">'tableName'</span><span class="p">,</span> <span class="nv">$paramDel</span><span class="p">);</span>  
+<span class="cm">/*Array  </span>
+<span class="cm">(  </span>
+<span class="cm">    [colKey1] =&gt; colVal1  </span>
+<span class="cm">)  </span>
+<span class="cm">DELETE FROM table WHERE  `key1` =  :key1;  </span>
+<span class="cm">*/</span>  
+<span class="nv">$resultDelete</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$delete</span><span class="p">);</span>  
+
+<span class="c1">###### SELECT STATEMENT ######  </span>
+<span class="c1">// Array with columns to retrieve  </span>
+<span class="nv">$paramSelect</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">'colName1'</span><span class="p">,</span> <span class="s1">'colName2'</span><span class="p">,</span> <span class="s1">'colNameN'</span><span class="p">);</span>  
+<span class="c1">// Array with columnKey =&gt; value to where clause to select  </span>
+<span class="c1">// If null or empty, the result sql will be "SELECT col1, col2,... colN FROM tableName ORDER BY col1,col2,...colN;"  </span>
+<span class="nv">$paramWhere</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="c1">// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])  </span>
+    <span class="c1">// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param  </span>
+    <span class="s1">'colName1'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">DBManager</span><span class="o">::</span><span class="na">COL_LIKE</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'colValue1'</span> <span class="o">=&gt;</span> <span class="s1">'and'</span><span class="p">)),</span>  
+    <span class="s1">'colName2'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">DBManager</span><span class="o">::</span><span class="na">COL_LIKE</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'colValue2'</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">))</span>  
+<span class="p">);</span>  
+<span class="c1">// Array with columnKey -&gt; value to order clause to select  </span>
+<span class="c1">// If null or empty, the result sql will be "SELECT col1, col2,... colN FROM tableName;"  </span>
+<span class="nv">$paramOrder</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>  
+    <span class="c1">// Fields used in order  </span>
+    <span class="s1">'fields'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'colName1'</span><span class="p">,</span> <span class="s1">'colName2'</span><span class="p">),</span>  
+    <span class="c1">// Order type (asc|desc)  </span>
+    <span class="s1">'order'</span> <span class="o">=&gt;</span> <span class="s1">'ASC'</span>  
+<span class="p">);</span>  
+<span class="c1">// Creates the sql  </span>
+<span class="nv">$select</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">createSelect</span><span class="p">(</span><span class="s1">'tableName'</span><span class="p">,</span> <span class="nv">$paramSelect</span><span class="p">,</span> <span class="nv">$paramWhere</span><span class="p">,</span> <span class="nv">$paramOrder</span><span class="p">);</span>  
+<span class="cm">/*Array  </span>
+<span class="cm">(  </span>
+<span class="cm">    [colName1] =&gt; %colValue1%  </span>
+<span class="cm">    [colName2] =&gt; %colValue2%  </span>
+<span class="cm">)  </span>
+<span class="cm">SELECT `colName1`, `colName2`, `colNameN` FROM table  WHERE  `colName1` LIKE :colName1 and `colName2` LIKE :colName2 ORDER BY colName1,colName2 ASC;  </span>
+<span class="cm">*/</span>  
+<span class="nv">$resultSelect</span> <span class="o">=</span> <span class="nv">$pdo</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="nv">$select</span><span class="p">);</span>  
+
+<span class="nb">unset</span><span class="p">(</span><span class="nv">$pdo</span><span class="p">);</span>  
+<span class="cp">?&gt;</span><span class="x">  </span>
+</pre></div>
+
+<h2>
+<a name="screenshots" class="anchor" href="#screenshots"><span class="octicon octicon-link"></span></a>Screenshots</h2>
+
+<p><img src="views/screenshot.png" alt="Logger HTML view" title="The script result on the web"><br><img src="views/screenshot2.png" alt="Logger FILE view" title="The script result on the file"></p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/mend3" class="avatar"><img src="https://avatars3.githubusercontent.com/u/1450229?v=2&amp;s=60" width="48" height="48"></a> <a href="https://github.com/mend3">mend3</a> maintains <a href="https://github.com/mend3/dbmanager-logger">DBManager-logger</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/mend3/dbmanager-logger/tarball/master" class="tar">tar</a><a href="https://github.com/mend3/dbmanager-logger/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
