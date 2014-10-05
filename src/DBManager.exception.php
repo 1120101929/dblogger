@@ -40,6 +40,13 @@ class DBManagerException extends Exception {
     protected $message = 'Unknown DBManagerException';     // Exception message
 
     /**
+     * Holds the statement
+     *
+     * @var string $statement
+     */
+    private $statement = null;
+
+    /**
      * Get the DBManagerException instance
      * 
      * @access public
@@ -93,7 +100,7 @@ class DBManagerException extends Exception {
 
     /**
      * Set the $statement
-     * 
+     *
      * @param string $statement The statement
      * @return $this
      */

@@ -230,7 +230,7 @@ class DBManager {
      *
      * @access private
      * @see DBManager::getInstance()
-     * @return PDO Return the PDO connection.
+     * @return \DBManager Return the PDO connection.
      */
     private function __construct() {
         $this->log = Logger::getLogger(__CLASS__);
@@ -300,16 +300,6 @@ class DBManager {
      */
     private function __clone() {
         $this->log->info("Database connection was cloned");
-    }
-
-    /**
-     * Method unserialize private type to prevent deserialization of the instance of this class.
-     *
-     * @access private
-     * @return void
-     */
-    private function __wakeup() {
-        
     }
 
     /**
@@ -485,19 +475,15 @@ class DBManager {
     private function startTransaction() {
         $exception = null;
         if (is_null($this->connection)) {
-            $this->log->fatal("Database connection is inactive");
             $exception = new Exception("Database connection is inactive", 0, null);
             self::createFrom($exception);
-            return false;
-        }
-        if ($this->connection->inTransaction()) {
-            $this->log->fatal("There is already an active transaction");
+        } else if ($this->connection->inTransaction()) {
             $exception = new Exception("There is already an active transaction", 0, null);
             self::createFrom($exception);
-            return false;
+        } else {
+            $this->connection->beginTransaction();
+            $this->log->info("Transaction started");
         }
-        $this->connection->beginTransaction();
-        $this->log->info("Transaction started");
     }
 
     /**
@@ -508,7 +494,6 @@ class DBManager {
      * @return array The collection base ond $sql
      */
     public function select($sql) {
-
         try {
             $this->startTransaction();
             $st = $this->connection->prepare($sql);
@@ -527,6 +512,7 @@ class DBManager {
         } catch (Exception $e) {
             $this->revert($e, $sql);
         }
+        return array();
     }
 
     /**
@@ -544,11 +530,12 @@ class DBManager {
             (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
 
             $commit = $this->sendCommit();
-
-            return $this->finalLog($commit);
+            $this->finalLog($commit);
+            return $commit;
         } catch (Exception $e) {
             $this->revert($e, $sql);
         }
+        return false;
     }
 
     /**
@@ -557,7 +544,8 @@ class DBManager {
      * @access private
      * @param Exception $e The exception catched
      * @param string $statement The statement
-     * @return DatabaseException The exception error
+     * @throws InvalidArgumentException
+     * @return DBManagerException The exception error
      */
     private function createFrom(Exception $e, $statement = "") {
 
@@ -577,6 +565,7 @@ class DBManager {
         $exception->setStatement($statement);
 
         $this->log->fatal($exception);
+        return $exception;
     }
 
     /**
@@ -584,7 +573,6 @@ class DBManager {
      *
      * @access private
      * @param string|int|array $data The parameters to filter
-     * @param bool $forceQuote If true, use PDO::quote() in the values
      * @return array|int|string The filtered $data
      */
     private function sanitizeParam($data) {
@@ -680,16 +668,6 @@ class DBManager {
     }
 
     /**
-     * Get the statement
-     *
-     * @access public
-     * @return mixed The statement
-     */
-    public function getStatement() {
-        return $this->statement;
-    }
-
-    /**
      * Get the collection
      *
      * @access public
@@ -747,7 +725,6 @@ class DBManager {
         }
         $this->log->info($ht);
         self::$param = array();
-        return $return;
     }
 
     /**
