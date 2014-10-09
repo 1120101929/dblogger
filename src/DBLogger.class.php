@@ -28,7 +28,7 @@
  * @copyright copyright (c) copyright 2014
  * @since   October 1, 2014 — Last update October 3, 2014
  * @license http://opensource.org/licenses/gpl-license.php GNU Public Licence (GPL)
- * @version 0.2.0
+ * @version 1.8.0
  * @link http://vmendonca.com.br
  */
 class DBLogger {

@@ -2,3 +2,6 @@
 /logs/
 /phpdoc/
 /helpers/
+/vendor/
+/cache/
+/views/
