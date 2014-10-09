@@ -5,11 +5,11 @@ Database Manager
 <p>You can audit all queries was performed into database, with values, datetime and totally debugged by viewing the files created into ./log/ folder.</p>
 
 ---
-[![Coverage Status](https://coveralls.io/repos/mend3/dbmanager-logger/badge.png)](https://coveralls.io/r/mend3/dbmanager-logger)
-[![Latest Stable Version](https://poser.pugx.org/connection/dbmanager/v/stable.svg)](https://packagist.org/packages/connection/dbmanager)
 [![Total Downloads](https://poser.pugx.org/connection/dbmanager/downloads.svg)](https://packagist.org/packages/connection/dbmanager)
 [![Latest Unstable Version](https://poser.pugx.org/connection/dbmanager/v/unstable.svg)](https://packagist.org/packages/connection/dbmanager)
+[![Latest Stable Version](https://poser.pugx.org/connection/dbmanager/v/stable.svg)](https://packagist.org/packages/connection/dbmanager)
 [![License](https://poser.pugx.org/connection/dbmanager/license.svg)](https://packagist.org/packages/connection/dbmanager)
+
 ---
 ## License
 
@@ -76,13 +76,8 @@ $paramIns = array(
 );
 // Creates the sql
 $insert = $pdo->createInsert('tableName', $paramIns);
-/*Array
-(
-    [cn1] => cv1
-    [cn2] => cv2
-    [cnN] => cvN
-)
-INSERT INTO tableName(cn1,cn2,cnN) VALUES (:cn1,:cn2,:cnN);
+/*
+Output: INSERT INTO tableName(cn1,cn2,cnN) VALUES (:cn1,:cn2,:cnN);
 */
 $resultInsert = $pdo->query($insert);
 
@@ -102,14 +97,8 @@ $paramCond = array(
 );
 // Creates the sql
 $update = $pdo->createUpdate('tableName', $paramUpd, $paramCond);
-/*Array
-(
-    [cn1] => cv1
-    [cn2] => cv2
-    [ck1] => cv1
-    [ck2] => cv2
-)
-UPDATE tableName SET `cn1` = :cn1, `cn2` = :cn2 WHERE `ck1` = :ck1 and `ck2` =  :ck2 ;
+/*
+Output: UPDATE tableName SET `cn1` = :cn1, `cn2` = :cn2 WHERE `ck1` = :ck1 and `ck2` =  :ck2 ;
 */
 $resultUpdate = $pdo->query($update);
 
@@ -122,23 +111,20 @@ $paramDel = array(
 	'ck1' => array(DBManager::COL_EQUAL => array('cv1' => null))
 );
 $delete = $pdo->createDelete('tableName', $paramDel);
-/*Array
-(
-    [ck1] => colVal1
-)
-DELETE FROM table WHERE  `key1` =  :key1;
+/*
+Output: DELETE FROM table WHERE  `key1` =  :key1;
 */
 $resultDelete = $pdo->query($delete);
 
 ###### SELECT STATEMENT ######
 // Array with columns to retrieve
-$paramSelect = array('cn1', 'cn2', 'cnN');
+$paramSelect = array('cn1', 'cnN');
 // Array with columnKey => value to where clause to select
 // If null or empty, the result sql will be "SELECT col1, col2,... colN FROM tableName ORDER BY col1,col2,...colN;"
 $paramWhere = array(
 	// The first parameter of array data is the where clause (like, equal, less, etc... [see the main class constants]])
 	// The second parameter of second array is the operand type (and|or) to concat with next column. Use null if the last param
-    'cn1' => array(DBManager::COL_LIKE => array('cv1' => 'and')),
+    'cn1' => array(DBManager::COL_EQUAL => array('cv1' => 'and')),
     'cn2' => array(DBManager::COL_LIKE => array('cv2' => null))
 );
 // Array with columnKey -> value to order clause to select
@@ -151,12 +137,8 @@ $paramOrder = array(
 );
 // Creates the sql
 $select = $pdo->createSelect('tableName', $paramSelect, $paramWhere, $paramOrder);
-/*Array
-(
-    [cn1] => %cv1%
-    [cn2] => %cv2%
-)
-SELECT `cn1`, `cn2`, `cnN` FROM table  WHERE  `cn1` LIKE :cn1 and `cn2` LIKE :cn2 ORDER BY cn1,cn2 ASC;
+/*
+Output: SELECT `cn1`, `cnN` FROM table WHERE `cn1` = :cn1 and `cn2` LIKE :cn2 ORDER BY cn1,cn2 ASC;
 */  
 $resultSelect = $pdo->select($select);  
   
