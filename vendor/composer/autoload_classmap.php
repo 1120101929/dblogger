@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Accounts' => $baseDir . '/src/Accounts.class.php',
     'AccountsLogger' => $baseDir . '/src/Accounts.logger.php',
+    'DBLogger' => $baseDir . '/src/DBLogger.class.php',
     'DBManager' => $baseDir . '/src/DBManager.class.php',
     'DBManagerException' => $baseDir . '/src/DBManager.exception.php',
     'Logger' => $vendorDir . '/apache/log4php/src/main/php/Logger.php',

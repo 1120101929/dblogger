@@ -6,7 +6,6 @@
     "type": "library",
     "homepage": "http://www.phpclasses.org/package/8849",
     "require": {
-        "php":">=5.4.0",
         "apache/log4php": "2.3.0"
     },
     "license": "MIT",

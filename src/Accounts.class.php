@@ -155,13 +155,19 @@ class Accounts {
      * @param Object $data Object containing data
      * @return \Accounts
      */
-    public function __construct($data) {
-        $this->login = $data->login;
-        $this->email = $data->email;
-        $this->access_level = $data->access_level;
-        $this->vip_level = $data->vip_level;
+    public function __construct($data = null) {
+        if (!empty($data) && !is_null($data)) {
+            $this->login = $data->login;
+            $this->email = $data->email;
+            $this->access_level = $data->access_level;
+            $this->vip_level = $data->vip_level;
+        }
 
         return $this;
+    }
+
+    public static function init() {
+        return new Accounts();
     }
 
 }

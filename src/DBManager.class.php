@@ -30,7 +30,7 @@
  * @version 0.2.0
  * @link http://vmendonca.com.br
  */
-class DBManager {
+class DBManager extends DBLogger {
 
     /**
      * Holds DBManager instance
@@ -39,6 +39,14 @@ class DBManager {
      * @var DBManager $instance Holds database instance
      */
     public static $instance = null;
+
+    /**
+     * Holds connection opened status
+     * 
+     * @access public
+     * @var bool $initialized Holds connection opened status
+     */
+    public $initialized = false;
 
     /**
      * Holds PDO connection
@@ -129,6 +137,14 @@ class DBManager {
     private $log;
 
     /**
+     * Holds the logger type
+     * 
+     * @access private
+     * @var bool $useCustomLogger Holds the logger type
+     */
+    private static $useCustomLogger = false;
+
+    /**
      * Where clause LIKE
      * 
      * @var string Format value as as (LIKE '%<b>colValue</b>%')
@@ -210,13 +226,31 @@ class DBManager {
      *
      * @access public
      * @staticvar DBManager $instance Class instance.
+     * @param boolean $l4php Log4PHP config file path
      *
      * @return DBManager Return this instance.
      */
-    public static function getInstance() {
+    public static function getInstance($l4php = null) {
 
         self::$startTime = microtime(true);
-        Logger::configure('config.xml');
+        if (!is_null($l4php)) {
+            if (!file_exists($l4php) || !is_file($l4php)) {
+                $l4php = null;
+                echo "The config file was specified but does not exists. Using basic logger.";
+            }
+            if (!is_readable($l4php)) {
+                $l4php = null;
+                echo "Can't read the config file. Check permissions. Using basic logger.";
+            }
+        }
+        if (!class_exists('Logger')) {
+            $l4php = null;
+            echo "Custom logger is valid but the Logger class itself doesn't exists. Using basic logger.";
+        }
+        self::$useCustomLogger = $l4php;
+        if (!is_null($l4php)) {
+            Logger::configure($l4php);
+        }
         if (null === self::$instance) {
             self::$instance = new DBManager();
         }
@@ -233,8 +267,8 @@ class DBManager {
      * @return \DBManager Return the PDO connection.
      */
     private function __construct() {
-        $this->log = Logger::getLogger(__CLASS__);
-        $this->log->info("Initializing database connection.");
+        $this->setLogger();
+        $this->getLogger()->info("Initializing database connection.");
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
         if (DB_PORT != 3306) {
             $dsn = "mysql:host=" . DB_HOST . ":" . DB_PORT . ";dbname=" . DB_NAME;
@@ -255,6 +289,7 @@ class DBManager {
             }
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->connection->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+            $this->initialized = true;
         } catch (Exception $e) {
             self::createFrom($e, $dsn);
         }
@@ -270,10 +305,10 @@ class DBManager {
     public function __destruct() {
         self::$endTime = microtime(true);
         self::$executionTime = (self::$endTime - self::$startTime);
-        $this->log->info(sprintf("All queries performed in %g seconds", (float) self::$executionTime));
-        $this->log->info("Database closed");
-        $this->log->info("Changes made in: " . $this->getTimestamp());
-        $this->log->clear();
+        $this->getLogger()->info(sprintf("All queries performed in %g seconds", (float) self::$executionTime));
+        $this->getLogger()->info("Database closed");
+        $this->getLogger()->info("Changes made in: " . $this->getTimestamp());
+        $this->getLogger()->clear();
     }
 
     /**
@@ -288,7 +323,7 @@ class DBManager {
         if (method_exists($this, $method)) {
             call_user_func_array(array($this, $method), $arguments);
         } else {
-            $this->log->warn("Called invalid method ({$method})");
+            $this->getLogger()->warn("Called invalid method ({$method})");
         }
     }
 
@@ -299,7 +334,7 @@ class DBManager {
      * @return void
      */
     private function __clone() {
-        $this->log->info("Database connection was cloned");
+        $this->getLogger()->info("Database connection was cloned");
     }
 
     /**
@@ -401,6 +436,10 @@ class DBManager {
         $sql = "SELECT ";
         $arr = array();
         foreach ($columns as $col) {
+            if ($col == '*') {
+                $arr[] = '*';
+                break;
+            }
             $arr[] = "`$col`";
         }
         if (empty($arr)) {
@@ -482,7 +521,7 @@ class DBManager {
             self::createFrom($exception);
         } else {
             $this->connection->beginTransaction();
-            $this->log->info("Transaction started");
+            $this->getLogger()->info("Transaction started");
         }
     }
 
@@ -494,23 +533,31 @@ class DBManager {
      * @return array The collection base ond $sql
      */
     public function select($sql) {
-        try {
-            $this->startTransaction();
-            $st = $this->connection->prepare($sql);
-            (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
-            $this->setSize($st->rowCount());
-            $result = $st->fetchAll(PDO::FETCH_OBJ);
-            $this->sendCommit();
+        if (!$this->isInitialized()) {
+            $e = new Exception("Database connection not established", 0, NULL);
+            self::createFrom($e, $sql);
+        } else {
+            try {
+                $this->startTransaction();
+                $st = $this->connection->prepare($sql);
+                (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
+                $this->setSize($st->rowCount());
+                $result = $st->fetchAll(PDO::FETCH_OBJ);
+                $this->sendCommit();
 
-            $return = array();
-            for ($i = 0; $i < $this->getSize(); $i++) {
-                $return[] = self::factory($this->getCallback(), $result[$i]);
+                $return = array();
+                if (!empty($result)) {
+                    $this->getLogger()->debug(sprintf("<b>%s</b> rows found", $this->getSize()));
+                    for ($i = 0; $i < $this->getSize(); $i++) {
+                        $return[] = self::factory($this->getCallback(), $result[$i]);
+                    }
+                }
+
+                $this->finalLog($return);
+                return $return;
+            } catch (Exception $e) {
+                $this->revert($e, $sql);
             }
-
-            $this->finalLog($return);
-            return $return;
-        } catch (Exception $e) {
-            $this->revert($e, $sql);
         }
         return array();
     }
@@ -523,17 +570,21 @@ class DBManager {
      * @return boolean True if query was executed successfuly, false otherwise
      */
     public function query($sql) {
+        if (!$this->isInitialized()) {
+            $e = new Exception("Database connection not established", 0, NULL);
+            self::createFrom($e, $sql);
+        } else {
+            try {
+                $this->startTransaction();
+                $st = $this->connection->prepare($sql);
+                (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
 
-        try {
-            $this->startTransaction();
-            $st = $this->connection->prepare($sql);
-            (!empty(self::$param)) ? $st->execute(self::$param) : $st->execute();
-
-            $commit = $this->sendCommit();
-            $this->finalLog($commit);
-            return $commit;
-        } catch (Exception $e) {
-            $this->revert($e, $sql);
+                $commit = $this->sendCommit();
+                $this->finalLog($commit);
+                return $commit;
+            } catch (Exception $e) {
+                $this->revert($e, $sql);
+            }
         }
         return false;
     }
@@ -564,7 +615,7 @@ class DBManager {
         $exception->setCode($sqlstate);
         $exception->setStatement($statement);
 
-        $this->log->fatal($exception);
+        $this->getLogger()->fatal($exception);
         return $exception;
     }
 
@@ -598,13 +649,13 @@ class DBManager {
         self::$param = array();
         $commit = $this->connection->commit();
         if ($commit) {
-            $this->log->info("Query commited " . ($commit ? 'successfuly' : 'with errors'));
-            $this->log->info("Transaction finished");
+            $this->getLogger()->info("Query commited " . ($commit ? 'successfuly' : 'with errors'));
+            $this->getLogger()->info("Transaction finished");
         }
-        $this->log->info(sprintf("Statement [%s] closed", self::$mode));
+        $this->getLogger()->info(sprintf("Statement [%s] closed", self::$mode));
         return $commit;
     }
-    
+
     /**
      * Roll back the data
      * 
@@ -617,7 +668,7 @@ class DBManager {
         self::$param = array();
         $rollback = $this->connection->rollBack();
         if ($rollback) {
-            $this->log->warn("Transaction finished but nothing changed. All data rolled back.");
+            $this->getLogger()->warn("Transaction finished but nothing changed. All data rolled back.");
         }
         self::createFrom($e, $sql);
         return $rollback;
@@ -687,9 +738,9 @@ class DBManager {
     private function setParam($param) {
         self::$param = $param;
         if (!empty($param)) {
-            $this->log->debug($param);
+            $this->getLogger()->debug($param);
         } else {
-            $this->log->info(sprintf("Statement [%s] executed with no parameters", self::$mode));
+            $this->getLogger()->info(sprintf("Statement [%s] executed with no parameters", self::$mode));
         }
     }
 
@@ -723,7 +774,7 @@ class DBManager {
         for ($i = 0; $i <= 40; $i++) {
             $ht .= '#';
         }
-        $this->log->info($ht);
+        $this->getLogger()->info($ht);
         self::$param = array();
     }
 
@@ -755,10 +806,27 @@ class DBManager {
      */
     private function handleCreate($table, $args, $sql) {
         self::$mode = substr($sql, 0, 6);
-        $this->log->info(sprintf("Statement [%s] created", self::$mode));
+        $this->getLogger()->info(sprintf("Statement [%s] created", self::$mode));
         $this->setCallback($table);
         $this->setParam($this->sanitizeParam($args));
-        $this->log->debug($sql);
+        $this->getLogger()->debug($sql);
+    }
+
+    /**
+     * Get the connection opened status
+     * 
+     * @return bool Return if connection was established
+     */
+    private function isInitialized() {
+        return $this->initialized;
+    }
+
+    private function setLogger() {
+        $this->log = DBLogger::init(__CLASS__, self::$useCustomLogger);
+    }
+
+    private function getLogger() {
+        return $this->log;
     }
 
 }

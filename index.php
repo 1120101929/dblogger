@@ -18,7 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 /**
  * Set the default locale
  */
@@ -56,7 +55,10 @@ define('DB_ENCODING', 'utf8');
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
-$pdo = DBManager::getInstance();
+// Set the config file
+$config = __DIR__ . '/config.xml';
+
+$pdo = DBManager::getInstance($config);
 
 ################### INSERT STATEMENT ###################
 $paramIns = array(
@@ -99,4 +101,5 @@ $paramOrder = array(
 $select = $pdo->createSelect('accounts', $paramSelect, $paramWhere, $paramOrder);
 $resultSelect = $pdo->select($select);
 
+// unset the object, close connection and clear the logger
 unset($pdo);
