@@ -3,6 +3,7 @@
 /**
  * Class DBManager - Connect a MySQL server using PDO and Log it!
  */
+
 namespace SRC\Manager {
 
 	use DateTime;
@@ -30,13 +31,14 @@ namespace SRC\Manager {
 	 * along with this program; if not, write to the Free Software
 	 * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	 *
-	 * @package DBManager
+	 * @package SRC
+	 * @subpackage Main
 	 * @author Victor Mendonca <victor.mendonca@live.com>
 	 * @copyright copyright (c) copyright 2014
-	 * @since   October 1, 2014 — Last update October 3, 2014
+	 * @since   October 1, 2014 — Last update February 2, 2015
 	 * @license http://opensource.org/licenses/gpl-license.php GNU Public Licence (GPL)
-	 * @version 2.1.0
-	 * @link http://vmendonca.com.br
+	 * @version 2.1.1
+	 * @link http://fb.me/vmend3
 	 */
 	class DBManager {
 
@@ -302,6 +304,8 @@ namespace SRC\Manager {
 		}
 
 		/**
+		 * Get the current connection
+		 *
 		 * @return DBManager|\PDO
 		 */
 		public static function getConnection() {
@@ -373,6 +377,8 @@ namespace SRC\Manager {
 		 */
 		public function factoryFromCollection($collectionIndex) {
 			$type = get_class(self::getCollection()[$collectionIndex]);
+
+			/** @type \SRC\Impl\IModels $type */
 
 			return $this->factory($type, self::getCollection()[$collectionIndex]);
 		}

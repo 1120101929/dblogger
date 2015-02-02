@@ -26,17 +26,29 @@ namespace SRC\Manager {
 	 * along with this program; if not, write to the Free Software
 	 * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	 *
-	 * @package DBManager
+	 * @package SRC
+	 * @subpackage Main
 	 * @author Victor Mendonca <victor.mendonca@live.com>
 	 * @copyright copyright (c) copyright 2014
-	 * @since   October 1, 2014 — Last update October 3, 2014
+	 * @since   October 1, 2014 — Last update February 2, 2015
 	 * @license http://opensource.org/licenses/gpl-license.php GNU Public Licence (GPL)
-	 * @version 1.8.0
-	 * @link http://vmendonca.com.br
+	 * @version 2.1.1
+	 * @link http://fb.me/vmend3
 	 */
 	class DBLogger {
 
+		/**
+		 * Define if is custom logger
+		 *
+		 * @type null|resource
+		 */
 		private static $isCustom = null;
+
+		/**
+		 * The logger
+		 *
+		 * @type null|\SRC\Manager\DBLogger
+		 */
 		protected $dbLog = null;
 
 		/**

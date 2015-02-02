@@ -14,8 +14,7 @@
   "homepage": "http://www.phpclasses.org/package/8849",
   "require": {
     "php": ">=5.4.0",
-    "apache/log4php": "2.3.0",
-    "squizlabs/php_codesniffer": "*"
+    "apache/log4php": "2.3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "4.*"
@@ -28,14 +27,14 @@
     }
   ],
   "support": {
-    "email": "root@vmendonca.com.br"
+    "email": "victor.mendonca@live.com"
   },
   "autoload": {
     "psr-4": {
-      "Manager\\": "src/main/",
-      "Impl\\": "src/interfaces/",
-      "Loggers\\": "src/loggers/",
-      "Models\\": "src/models/"
+      "SRC\\Manager\\": "src/main/",
+      "SRC\\Impl\\": "src/interfaces/",
+      "SRC\\Loggers\\": "src/loggers/",
+      "SRC\\Models\\": "src/models/"
     },
     "classmap": [
       "src/loggers/",

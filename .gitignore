@@ -1,6 +1,6 @@
 .idea/
 helpers/
 logs/
-vendor/
+./vendor/
 views/
 phpdoc/
