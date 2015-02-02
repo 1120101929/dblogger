@@ -1,7 +1,6 @@
-/nbproject/
-/logs/
-/phpdoc/
-/helpers/
-/vendor/
-/cache/
-/views/
+.idea/
+helpers/
+logs/
+vendor/
+views/
+phpdoc/

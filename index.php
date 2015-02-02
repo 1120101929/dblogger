@@ -18,6 +18,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+use SRC\Manager\DBManager;
+
 /**
  * Set the default locale
  */
@@ -43,7 +46,7 @@ define('DB_USER', 'root');
 /**
  * The password of the mysql server
  */
-define('DB_PASS', '');
+define('DB_PASS', 'admin');
 /**
  * The database to connect
  */
@@ -52,52 +55,56 @@ define('DB_NAME', 'test');
  * The database encoding (used to insert and update statements)
  */
 define('DB_ENCODING', 'utf8');
+/**
+ * Debug sql on errors
+ */
+define('SQL_DEBUG', false);
 
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Set the config file
 $config = __DIR__ . '/config.xml';
 
-$pdo = DBManager::getInstance($config);
+$pdo = DBManager::newInstance($config);
 
 ################### INSERT STATEMENT ###################
-$paramIns = array(
+$paramIns = [
     'login' => 'adm2',
     'password' => '0DPiKuNIrrVmD8IUCuw1hQxNqZc=',
     'access_level' => 100,
     'vip_level' => 4,
     'email' => 'root@vmendonca.com.br'
-);
+];
 $insert = $pdo->createInsert('accounts', $paramIns);
 $resultInsert = $pdo->query($insert);
 
 ################### UPDATE STATEMENT ###################
-$paramUpd = array(
+$paramUpd = [
     'access_level' => -400,
     'vip_level' => 5,
-);
-$paramCond = array(
-    'login' => array(DBManager::COL_EQUAL => array('adm2' => 'and')),
-    'email' => array(DBManager::COL_EQUAL => array('root@vmendonca.com.br' => null))
-);
+];
+$paramCond = [
+    'login' => [DBManager::COL_EQUAL => ['adm2' => 'and']],
+    'email' => [DBManager::COL_EQUAL => ['root@vmendonca.com.br' => null]]
+];
 $update = $pdo->createUpdate('accounts', $paramUpd, $paramCond);
 $resultUpdate = $pdo->query($update);
 
 ################### DELETE STATEMENT ###################
-$paramDel = array('login' => array(DBManager::COL_EQUAL => array('adm2' => null)));
+$paramDel = ['login' => [DBManager::COL_EQUAL => ['adm2' => null]]];
 $delete = $pdo->createDelete('accounts', $paramDel);
 $resultDelete = $pdo->query($delete);
 
 ################### SELECT STATEMENT ###################
-$paramSelect = array('login', 'email', 'access_level', 'vip_level');
-$paramWhere = array(
-    'login' => array(DBManager::COL_LIKE => array('adm' => 'and')),
-    'email' => array(DBManager::COL_LIKE => array('mend' => null))
-);
-$paramOrder = array(
-    'fields' => array('access_level', 'vip_level'),
+$paramSelect = ['login', 'email', 'access_level', 'vip_level'];
+$paramWhere = [
+    'login' => [DBManager::COL_LIKE => ['adm' => 'and']],
+    'email' => [DBManager::COL_LIKE => ['mend' => null]]
+];
+$paramOrder = [
+    'fields' => ['access_level', 'vip_level'],
     'order' => 'ASC'
-);
+];
 $select = $pdo->createSelect('accounts', $paramSelect, $paramWhere, $paramOrder);
 $resultSelect = $pdo->select($select);
 

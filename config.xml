@@ -1,6 +1,6 @@
 <configuration xmlns="http://logging.apache.org/log4php/">
     
-    <renderer renderedClass="Accounts" renderingClass="AccountsLogger" />
+    <renderer renderedClass="SRC\Models\Accounts" renderingClass="SRC\Loggers\AccountsLogger" />
  
     <appender name="ConsoleAppender" class="LoggerAppenderConsole" />
     
